@@ -1,0 +1,26 @@
+FROM fedora:35
+
+ENV DNSMETER_VERSION 1.0.2
+
+RUN  dnf install -y \
+    openssl-devel   \
+    bzip2-devel     \
+    libidn2-devel   \
+    zlib-devel      \
+    libpcap-devel   \
+    pcre-devel      \
+    gettext-devel   \
+    gcc g++
+
+ADD https://www.dns-oarc.net/files/dnsmeter/dnsmeter-${DNSMETER_VERSION}.tar.gz /opt/
+
+RUN tar -zxf /opt/dnsmeter-${DNSMETER_VERSION}.tar.gz -C /opt/
+
+RUN cd /opt/dnsmeter-${DNSMETER_VERSION}/               && \
+    ./configure                                         && \
+    make install distclean
+
+
+WORKDIR /workspace
+
+CMD ["/bin/bash"]
