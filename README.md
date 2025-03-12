@@ -1,7 +1,9 @@
 # dnsmeter
 
 ## make
-```
+```bash
+make dnsmeter_ubuntu
+
 make dnsmeter_fedora
 ```
 
