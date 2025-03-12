@@ -1,0 +1,21 @@
+FROM ubuntu:20.04
+
+ENV DNSMETER_VERSION=1.0.2
+ENV TZ=Asia/Shanghai
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt update  && apt install -y tzdata libssl-dev libbz2-dev libidn2-dev zlib1g-dev libpcap-dev libpcre3-dev gettext build-essential && \
+    dpkg-reconfigure -f noninteractive tzdata && \
+    apt clean all
+
+ADD https://www.dns-oarc.net/files/dnsmeter/dnsmeter-${DNSMETER_VERSION}.tar.gz /opt/
+
+RUN tar -zxf /opt/dnsmeter-${DNSMETER_VERSION}.tar.gz -C /opt/ && \
+    cd /opt/dnsmeter-${DNSMETER_VERSION}/               && \
+    ./configure                                         && \
+    make && make install && cd /opt/ && rm -rf dnsmeter-${DNSMETER_VERSION}.tar.gz dnsmeter-${DNSMETER_VERSION}
+
+
+WORKDIR /workspace
+
+CMD ["/bin/bash"]
